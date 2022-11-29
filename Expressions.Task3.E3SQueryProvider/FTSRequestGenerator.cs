@@ -13,7 +13,7 @@ namespace Expressions.Task3.E3SQueryProvider
         private readonly string _baseAddress;
 
         #region Constructors
-        
+
         public FtsRequestGenerator(string baseAddress)
         {
             _baseAddress = baseAddress;
@@ -32,14 +32,17 @@ namespace Expressions.Task3.E3SQueryProvider
         {
             string metaTypeName = GetMetaTypeName(type);
 
+            var sequences = query.Split("%AND%");
+            var statements = new List<Statement>();
+
+            foreach (var sequence in sequences)
+            {
+                statements.Add(new Statement() { Query = sequence });
+            }
+
             var ftsQueryRequest = new FtsQueryRequest
             {
-                Statements = new List<Statement>
-                {
-                    new Statement {
-                        Query = query
-                    }
-                },
+                Statements = statements,
                 Start = start,
                 Limit = limit
             };
